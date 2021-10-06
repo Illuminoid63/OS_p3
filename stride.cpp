@@ -49,6 +49,8 @@ bool sortingComparator(job A, job B){
     }
 }
 
+int passOfLastJobRan = 0;
+
 job scheduleDecision(vector<job>& jobs){
     vector<job> runnables;
     for(int i = 0; i < jobs.size(); i++)
@@ -64,9 +66,11 @@ job scheduleDecision(vector<job>& jobs){
     for(int i = 0; i < jobs.size(); i++){
         if(jobs.at(i).name == nextToRunName){
             jobs.at(i).status = "running";
+            passOfLastJobRan = jobs.at(i).pass;
             return jobs.at(i);
         }
     }
+
 }
 
 int main(int argc, char * argv[]) {
@@ -157,7 +161,6 @@ int main(int argc, char * argv[]) {
                                 if(jobs.at(i).status == "running"){ 
                                     previousRunningJob = jobs.at(i);
                                     jobs.at(i).status = "blocked";
-                                    jobs.at(i).pass += jobs.at(i).stride; //this might change depending on the answers to my questions
                                     break;
                                 }
 
@@ -171,8 +174,6 @@ int main(int argc, char * argv[]) {
                             cout << "Job: " << runningJob.name << " scheduled." << endl;
                         }
                     }
-                    //handle block command
-                    //runs schedule decision
                 }
                 else if(fileLine == "blocked"){
                     //handle blocked command
@@ -227,7 +228,7 @@ int main(int argc, char * argv[]) {
                             }
                         }
 
-                        newjob.pass = runnableJobs.size() == 0 ? 0 : minPass;
+                        newjob.pass = runnableJobs.size() == 0 ? passOfLastJobRan : minPass;
                         newjob.priority = stoi(commandArgs.at(2));
                         newjob.stride = large_number / newjob.priority;
 
@@ -247,8 +248,49 @@ int main(int argc, char * argv[]) {
                         }
                     }
                     else if(commandArgs.at(0) == "unblock"){ //checks if system is idle for error in the beginning
-                        //handle unblock
-                        //checks if system if idle and run scheduling if it is
+                        int blockedJobIndex;
+                        bool isBlocked = false;
+                        for(int i = 0; i < jobs.size(); i++){
+                            if(jobs.at(i).name == commandArgs.at(1) && jobs.at(i).status == "blocked"){
+                                isBlocked = true;
+                                blockedJobIndex = i;
+                                break;
+                            }
+                        }
+
+                        if(isBlocked){
+                            int minPass;
+                            vector<job> runnableJobs;
+
+                            for(int i = 0; i < jobs.size(); i++)
+                                if(jobs.at(i).status == "runnable" || jobs.at(i).status == "running")
+                                    runnableJobs.push_back(jobs.at(i));
+                
+                            for(int i = 0; i < runnableJobs.size(); i++){
+                                if(i == 0){
+                                    minPass = runnableJobs.at(i).pass;
+                                }
+                                else{
+                                    if(runnableJobs.at(i).pass < minPass)
+                                        minPass = runnableJobs.at(i).pass;
+                                }
+                            }
+
+                            bool systemWasIdle = systemIsIdle(jobs); //need to do this before updating status, else system would detect the recently unblocked job as a runnable
+
+                            jobs.at(blockedJobIndex).pass = runnableJobs.size() == 0 ? passOfLastJobRan : minPass;
+                            jobs.at(blockedJobIndex).status = "runnable";
+
+                            cout << "Job: "<< jobs.at(blockedJobIndex).name << " has unblocked. Pass set to: " << jobs.at(blockedJobIndex).pass << endl;
+
+                            if(systemWasIdle){
+                                job runningJob = scheduleDecision(jobs);
+                                cout << "Job: "<< runningJob.name << " scheduled." << endl;
+                            }
+                        }
+                        else{
+                            cout << "Error. Job: " << commandArgs.at(1) << " not blocked." << endl;
+                        }
                     }
                 }
             }
