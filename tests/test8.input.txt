@@ -1,0 +1,5 @@
+newjob,A,100
+newjob,B,100
+interrupt
+finish
+finish

@@ -1,0 +1,5 @@
+New job: A added with priority: 100
+Job: A scheduled.
+Running:
+NAME    STRIDE  PASS  PRI
+A       1000    1000  100
