@@ -74,11 +74,11 @@ job scheduleDecision(vector<job>& jobs){
 }
 
 int main(int argc, char * argv[]) {
-    const int large_number = 100000;
+    const int large_number = 100000; //expample output seems to imply that this value is 100,000
     vector<job> jobs;
 
 	if(argc != 2){
-        cerr << "Error, specifcy input file" << endl;
+        cerr << "Error, specify input file" << endl;
         return 1;
     }
     ifstream inputFile(argv[1]);
@@ -91,7 +91,6 @@ int main(int argc, char * argv[]) {
             
             if (fileLine == ""); //skip empty lines
             else{
-                //cout << fileLine << endl;
                 if(fileLine == "runnable"){
                     cout << "Runnable:" << endl;
 
@@ -152,7 +151,7 @@ int main(int argc, char * argv[]) {
                         }
                     }
                 }
-                else if(fileLine == "block"){ //check if system is idle before and after block
+                else if(fileLine == "block"){
                     if(systemIsIdle(jobs))
                         cout << "Error. System is idle." << endl;
                     else{
@@ -176,7 +175,22 @@ int main(int argc, char * argv[]) {
                     }
                 }
                 else if(fileLine == "blocked"){
-                    //handle blocked command
+                    cout << "Blocked:" << endl;
+                    
+                    vector<job> blocked;
+                    for(int i = 0; i < jobs.size(); i++)
+                        if(jobs.at(i).status == "blocked")
+                            blocked.push_back(jobs.at(i));
+
+                    if(blocked.size() == 0){
+                        cout << "None" << endl;
+                    }
+                    else{
+                        cout << setw(8) << left << "NAME"<< setw(8) << left << "STRIDE" << setw(6) << left << "PASS"  << left << "PRI" << endl;
+
+                        for(int i = 0; i < blocked.size(); i++)
+                            cout << setw(8) << left << blocked.at(i).name << setw(8) << left <<  blocked.at(i).stride << setw(6) << left << blocked.at(i).pass << left << blocked.at(i).priority << endl;
+                    }
                 }
                 else if(fileLine == "running"){
                     cout << "Running:" << endl;
@@ -247,7 +261,7 @@ int main(int argc, char * argv[]) {
                             jobs.push_back(newjob);
                         }
                     }
-                    else if(commandArgs.at(0) == "unblock"){ //checks if system is idle for error in the beginning
+                    else if(commandArgs.at(0) == "unblock"){
                         int blockedJobIndex;
                         bool isBlocked = false;
                         for(int i = 0; i < jobs.size(); i++){
@@ -301,8 +315,5 @@ int main(int argc, char * argv[]) {
         perror("Error");
         return 1;
     }
-    /*for(int i = 0; i < jobs.size(); i++){
-        cout << jobs.at(i).name << endl;
-    }*/
 	return 0;
 }
