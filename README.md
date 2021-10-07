@@ -1,7 +1,7 @@
 # Simulated Stride Scheduler
 This is a project that I did for an operating systems class, where I implemented a stride scheduling algorithm.
 
-This program simulates how a stride scheduling algorithm would schedule jobs to run on a CPU using user-defined priorities to determine how often a program runs. I simulated this by just making input text files that would offer commands to my program and then the program handles the command and implements said algorithm.
+This program simulates how a stride scheduling algorithm would schedule jobs to run on a CPU using user-defined priorities to determine how often a program runs. I simulated this by making input text files that would offer commands to my program and then the program handles the command and implements said algorithm.
 
 Commands are as followed:
 
@@ -15,3 +15,6 @@ Commands are as followed:
 | runnable | | | Print information about the jobs in the runnable queue |
 | running | | | Print information about the currently running job |
 | blocked | | | Print information about the jobs on the blocked queue |
+
+
+P.S. see OSTEP chapter 9 for more information on stride scheduling algorithms and their use: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf
