@@ -1,4 +1,4 @@
-# OS_p3
+# Simulated Stride Scheduler
 This is a project that I did for an operating systems class, where I implemented a stride scheduling algorithm.
 
 This program simulates how a stride scheduling algorithm would schedule jobs to run on a CPU using user-defined priorities to determine how often a program runs. I simulated this by just making input text files that would offer commands to my program and then the program handles the command and implements said algorithm.
