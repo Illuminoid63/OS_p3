@@ -5,16 +5,16 @@ This program simulates how a stride scheduling algorithm would schedule jobs to 
 
 Commands are as followed:
 
-| opcode | argument 1 | argument 2 | meaning | test one | test 2
-| ------ | ---------- | ----------  | ------- | | test 3
-| newjob | NAME | PRIORITY | A new job with specified PRIORITY and NAME has arrived | | 
-| finish | | | The currently running job has terminated - it is an error if the system is idle | | 
-| interrupt | | | A timer interrupt has occurred - the currently running job's quantum is over | | 
-| block | | | The currently running job has become blocked | | 
-| unblock | NAME | | The named job becomes unblocked - it is an error if it was not blocked | | 
-| runnable | | | Print information about the jobs in the runnable queue | | 
-| running | | | Print information about the currently running job | | 
-| blocked | | | Print information about the jobs on the blocked queue | | 
+| opcode | argument 1 | argument 2 | meaning |
+| ------ | ---------- | ----------  | ------- |
+| newjob | NAME | PRIORITY | A new job with specified PRIORITY and NAME has arrived |
+| finish | | | The currently running job has terminated - it is an error if the system is idle |
+| interrupt | | | A timer interrupt has occurred - the currently running job's quantum is over |
+| block | | | The currently running job has become blocked |
+| unblock | NAME | | The named job becomes unblocked - it is an error if it was not blocked |
+| runnable | | | Print information about the jobs in the runnable queue |
+| running | | | Print information about the currently running job |
+| blocked | | | Print information about the jobs on the blocked queue |
 
 
 P.S. see OSTEP chapter 9 for more information on stride scheduling algorithms and their use: https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf
